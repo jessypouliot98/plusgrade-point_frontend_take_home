@@ -12,7 +12,6 @@ import { fmtCurrency } from "../../../utils/fmt/fmtCurrency";
 import { InputNumber } from "../../../components/InputNumber/InputNumber";
 import React, { useState } from "react";
 import { calculateTotalTaxes } from "../../../modules/tax-calculator/utils/calculateTotalTaxes";
-import { isNil } from "../../../utils/boolean/isNil";
 import { TextTotalTaxRate } from "./_components_/TextTotalTaxRate";
 
 const TABLE = {
