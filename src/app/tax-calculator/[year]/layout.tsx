@@ -20,7 +20,7 @@ export default async function TaxCalculatorLayout({ children, params }: React.Pr
     <div className="min-h-screen bg-gray-50 grid grid-rows-[auto_1fr]">
       <header className="bg-gray-300 px-4 py-6">
         <div className="max-w-screen-lg mx-auto">
-          <h1 className="text-4xl font-medium">{`${year} Tax Calculator`}</h1>
+          <h1 className="text-4xl">{`${year} Tax Calculator`}</h1>
         </div>
       </header>
       <main>

@@ -9,6 +9,11 @@ import { SkeletonText } from "../../../components/SkeletonText/SkeletonText";
 import { fmtPercent } from "../../../utils/fmt/fmtPercent";
 import { isNotNil } from "../../../utils/boolean/isNotNil";
 import { fmtCurrency } from "../../../utils/fmt/fmtCurrency";
+import { InputNumber } from "../../../components/InputNumber/InputNumber";
+import React, { useState } from "react";
+import { calculateTotalTaxes } from "../../../modules/tax-calculator/utils/calculateTotalTaxes";
+import { isNil } from "../../../utils/boolean/isNil";
+import { TextTotalTaxRate } from "./_components_/TextTotalTaxRate";
 
 const TABLE = {
   columns: 3,
@@ -19,61 +24,108 @@ export default function TaxCalculatorPage() {
   const taxYear = Number(params.year);
   const { getWeakKey } = useWeakKey("tax-bracket");
   const query = useFetchTaxBracketListQuery({ taxYear });
+  const [salary, setSalary] = useState<number>();
 
   return (
     <>
       <table className="styled-table w-full">
         <thead>
-        <tr>
-          <th>Tax Rate</th>
-          <th>Salary (min)</th>
-          <th>Salary (max)</th>
-        </tr>
+          <tr>
+            <th>Salary (min)</th>
+            <th>Salary (max)</th>
+            <th className="w-1/2">Tax Rate</th>
+          </tr>
         </thead>
         <ReactQueryBoundary
           query={query}
           dataExtractor={(res) => res.data.tax_brackets}
+          emptyExtractor={(data) => data.length === 0}
           renderLoading={() => (
             <tbody>
               {Array.from({ length: 3 }, (_, i) => (
                 <tr key={`skeleton-${i}`}>
+                  <td><SkeletonText className="w-16"/></td>
+                  <td><SkeletonText className="w-16"/></td>
                   <td><SkeletonText className="w-12"/></td>
-                  <td><SkeletonText className="w-16"/></td>
-                  <td><SkeletonText className="w-16"/></td>
                 </tr>
               ))}
             </tbody>
           )}
           renderError={(error) => (
             <tbody>
-            <tr>
-              <td colSpan={TABLE.columns}>
-                <ErrorBanner error={error}/>
-              </td>
-            </tr>
+              <tr>
+                <td colSpan={TABLE.columns}>
+                  <ErrorBanner error={error}/>
+                </td>
+              </tr>
             </tbody>
           )}
           renderEmpty={() => (
             <tbody>
-            <tr>
-              <td colSpan={TABLE.columns}>
-                <ErrorBanner error={"No tax brackets found"}/>
-              </td>
-            </tr>
+              <tr>
+                <td colSpan={TABLE.columns}>
+                  <ErrorBanner error={"No tax brackets found"}/>
+                </td>
+              </tr>
             </tbody>
           )}
           renderContent={(taxBrackets) => (
             <tbody>
-            {taxBrackets.map((taxBracket) => (
-              <tr key={getWeakKey(taxBracket)}>
-                <td>{fmtPercent(taxBracket.rate, 2)}</td>
-                <td>{fmtCurrency(taxBracket.min)}</td>
-                <td>{isNotNil(taxBracket.max) ? fmtCurrency(taxBracket.max) : "-"}</td>
-              </tr>
-            ))}
+              {taxBrackets.map((taxBracket) => (
+                <tr key={getWeakKey(taxBracket)}>
+                  <td>{fmtCurrency(taxBracket.min)}</td>
+                  <td>{isNotNil(taxBracket.max) ? fmtCurrency(taxBracket.max) : "-"}</td>
+                  <td>{fmtPercent(taxBracket.rate, 2)}</td>
+                </tr>
+              ))}
             </tbody>
           )}
         />
+        <tfoot>
+          <tr>
+            <td colSpan={TABLE.columns - 1}>
+              <div className="flex items-center gap-[var(--px-cell)]">
+                <label className="font-bold" htmlFor="salary">Salary:</label>
+                <InputNumber
+                  className="flex-1"
+                  id="salary"
+                  value={salary}
+                  onChangeValue={setSalary}
+                />
+              </div>
+            </td>
+            <td>
+              <ReactQueryBoundary
+                query={query}
+                dataExtractor={(res) => res.data.tax_brackets}
+                emptyExtractor={(data) => data.length === 0}
+                renderLoading={() => (
+                  <TextTotalTaxRate className="animate-pulse" relativeRate={0} totalTaxes={0} />
+                )}
+                renderError={(error) => (
+                  <TextTotalTaxRate className="opacity-40" relativeRate={0} totalTaxes={0} />
+                )}
+                renderEmpty={() => (
+                  <TextTotalTaxRate className="opacity-40" relativeRate={0} totalTaxes={0} />
+                )}
+                renderContent={(taxBrackets) => {
+                  let totalTaxes: number;
+                  let relativeRate: number;
+                  if (salary) {
+                    totalTaxes = calculateTotalTaxes(salary, taxBrackets);
+                    relativeRate = totalTaxes / salary;
+                  } else {
+                    totalTaxes = 0;
+                    relativeRate = 0;
+                  }
+                  return (
+                    <TextTotalTaxRate relativeRate={relativeRate} totalTaxes={totalTaxes} />
+                  )
+                }}
+              />
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </>
   )

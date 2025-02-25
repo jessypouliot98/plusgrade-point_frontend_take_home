@@ -34,6 +34,11 @@ body {
     --color-bg: theme(colors.gray.200);
   }
 
+  .styled-table tfoot {
+    --color-border: theme(colors.gray.300);
+    --color-bg: theme(colors.gray.200);
+  }
+
   .styled-table th,
   .styled-table td {
     @apply text-left px-[var(--px-cell)] py-[var(--py-cell)] border border-[var(--color-border)] bg-[var(--color-bg)];
