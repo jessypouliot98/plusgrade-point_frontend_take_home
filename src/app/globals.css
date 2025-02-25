@@ -19,3 +19,24 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+
+  .styled-table {
+    --px-cell: theme(spacing.2);
+    --py-cell: theme(spacing.2);
+    --color-border: theme(colors.gray.200);
+    --color-bg: theme(colors.white);
+  }
+
+  .styled-table thead {
+    --color-border: theme(colors.gray.300);
+    --color-bg: theme(colors.gray.200);
+  }
+
+  .styled-table th,
+  .styled-table td {
+    @apply text-left px-[var(--px-cell)] py-[var(--py-cell)] border border-[var(--color-border)] bg-[var(--color-bg)];
+  }
+
+}
