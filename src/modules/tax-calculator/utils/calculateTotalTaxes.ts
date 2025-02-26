@@ -1,9 +1,13 @@
-type TaxBracket = {
+export type TaxBracket = {
   min: number;
   max?: number;
   rate: number;
 }
 
+/**
+ * Expects tax brackets to be non-overlapping and sorted ASC.
+ * Otherwise, you may get unexpected results.
+ */
 export function calculateTotalTaxes(salary: number, taxBrackets: TaxBracket[]): number {
   let total = 0;
 
