@@ -10,7 +10,7 @@ export function SkeletonBox({ className, style }: SkeletonBoxProps) {
   return (
     <div
       style={style}
-      className={clsx("animate-pulse bg-(--color)", className)}
+      className={clsx("[--color:theme(colors.gray.200)] animate-pulse bg-[var(--color)]", className)}
     />
   )
 }
