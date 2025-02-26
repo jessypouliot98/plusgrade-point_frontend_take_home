@@ -1,8 +1,6 @@
 import React from "react";
 import { ReactQueryProvider } from "../../../modules/react-query/ReactQueryProvider/ReactQueryProvider";
 import { Metadata } from "next";
-import Link from "next/link";
-import { buildCalculatorUrl } from "./_utils_/buildCalculatorUrl";
 import { CalculatorMenu } from "./_components_/CalculatorMenu";
 
 type PageProps = { params: Promise<{ year: string }> };
