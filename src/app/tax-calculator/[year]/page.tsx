@@ -10,9 +10,10 @@ import { fmtPercent } from "../../../utils/fmt/fmtPercent";
 import { isNotNil } from "../../../utils/boolean/isNotNil";
 import { fmtCurrency } from "../../../utils/fmt/fmtCurrency";
 import { InputNumber } from "../../../components/InputNumber/InputNumber";
-import React, { useState } from "react";
+import React from "react";
 import { calculateTotalTaxes } from "../../../modules/tax-calculator/utils/calculateTotalTaxes";
 import { TextTotalTaxRate } from "./_components_/TextTotalTaxRate";
+import { useSalary } from "./_hooks_/useSalary";
 
 const TABLE = {
   columns: 3,
@@ -23,7 +24,7 @@ export default function TaxCalculatorPage() {
   const taxYear = Number(params.year);
   const { getWeakKey } = useWeakKey("tax-bracket");
   const query = useFetchTaxBracketListQuery({ taxYear });
-  const [salary, setSalary] = useState<number>();
+  const [salary, setSalary] = useSalary();
 
   return (
     <>
