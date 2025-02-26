@@ -13,7 +13,6 @@ import { InputNumber } from "../../../components/InputNumber/InputNumber";
 import React, { useState } from "react";
 import { calculateTotalTaxes } from "../../../modules/tax-calculator/utils/calculateTotalTaxes";
 import { TextTotalTaxRate } from "./_components_/TextTotalTaxRate";
-import { SkeletonBox } from "../../../components/SkeletonBox/SkeletonBox";
 
 const TABLE = {
   columns: 3,
@@ -28,7 +27,6 @@ export default function TaxCalculatorPage() {
 
   return (
     <>
-      <SkeletonBox className="w-72 h-72"/>
       <table className="styled-table w-full">
         <thead>
           <tr>
