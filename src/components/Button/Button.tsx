@@ -36,7 +36,7 @@ export function Button<TAsChild extends boolean = false>({
       {...buttonProps}
       className={clsx(
         inline ? "inline-flex" : "flex",
-        "transition-colors",
+        "transition-colors rounded",
         "items-center px-2 py-2",
         variants[variant],
         className,

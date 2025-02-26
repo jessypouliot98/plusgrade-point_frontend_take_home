@@ -44,4 +44,8 @@ body {
     @apply text-left px-[var(--px-cell)] py-[var(--py-cell)] border border-[var(--color-border)] bg-[var(--color-bg)];
   }
 
+  .styled-input {
+    @apply bg-white border border-gray-300 rounded min-h-[42px] py-1 px-2;
+  }
+
 }

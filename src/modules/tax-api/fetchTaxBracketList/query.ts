@@ -7,9 +7,9 @@ export type Params = {
   taxYear: number;
 }
 
-export type Options = {
+export type Options = Partial<{
   signal: AbortSignal;
-}
+}>
 
 const zTaxBracket = z.object({
   min: z.number().int().min(0),
@@ -31,7 +31,7 @@ export function queryKeys(params: Params) {
   return buildPath(params).split("/");
 }
 
-export async function fetchTaxBracketList(params: Params, opts: Options): Promise<AxiosResponse<ResponseData>> {
+export async function fetchTaxBracketList(params: Params, opts: Options = {}): Promise<AxiosResponse<ResponseData>> {
   const response = await taxApiClient.get(buildPath(params), {
     signal: opts.signal,
   });
